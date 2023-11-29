@@ -1,7 +1,5 @@
 package com.caeta.bookstore.autor;
 
-import com.caeta.bookstore.autor.exeption.ErrorDTO;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -12,15 +10,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Collection;
+import java.time.LocalDate;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @SpringBootTest
@@ -48,10 +44,18 @@ public class AutorControllerTest {
         String jsonRequest = objectMapper.writeValueAsString(request);
 
         // Realize a requisição POST para criar um novo Autor
-        mockMvc.perform(post("/autor")
+        ResultActions resultActions = mockMvc.perform(post("/autor")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(jsonRequest))
-                .andExpect(status().isOk());
+                        .content(jsonRequest));
+
+        var responseBody = resultActions.andReturn().getResponse().getContentAsString();
+        var responseStatusCode = resultActions.andReturn().getResponse().getStatus();
+
+        assertTrue(responseBody.contains(LocalDate.now().toString()));
+        assertTrue(responseBody.contains("Eduardo"));
+        assertTrue(responseBody.contains("caet@email.com"));
+        assertTrue(responseBody.contains("Descrição do autor"));
+        assertEquals(201, responseStatusCode);
     }
 
     @Test
@@ -59,61 +63,22 @@ public class AutorControllerTest {
     public void shouldNotCreateAnAuthorWithARepeatedEmail() throws Exception {
         // Salva um autor no banco de dados para verificação de duplicidade de email
         autorRepository.save(new Autor("Eduardo", "caet@email.com", "Descrição do autor"));
+
         // Crie um objeto AutorRequest para simular a criação de um novo Autor
         AutorRequest request = new AutorRequest("Eduardo", "caet@email.com", "Descrição do autor");
+
         // Converta o objeto AutorRequest para JSON
         String jsonRequest = objectMapper.writeValueAsString(request);
+
         // Realiza a requisição POST para criar um novo Autor
         ResultActions resultActions = mockMvc.perform(post("/autor")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(jsonRequest))
-                .andExpect(status().isBadRequest());
+                        .content(jsonRequest));
 
-        Collection<String>  valueErro = convertResponseBody(resultActions);
+        var responseBody = resultActions.andReturn().getResponse().getContentAsString();
+        var responseStatusCode = resultActions.andReturn().getResponse().getStatus();
 
-        assertTrue(valueErro.contains("This email is already registered"));
-    }
-
-    private Collection<String> convertResponseBody(ResultActions resultActions) throws UnsupportedEncodingException, JsonProcessingException {
-        // Obtém o MvcResult para acessar o conteúdo do ResponseBody
-        MvcResult result = resultActions.andReturn();
-        String content = result.getResponse().getContentAsString();
-        // Converte o conteúdo JSON do ResponseBody para um objeto ErrorDTO usando o ObjectMapper
-        ErrorDTO errorResponse = objectMapper.readValue(content, ErrorDTO.class);
-        Collection<String> valueErro = errorResponse.getErros().values();
-
-        return valueErro;
+        assertTrue(responseBody.contains("This email is already registered"));
+        assertEquals(400, responseStatusCode);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
