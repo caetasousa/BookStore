@@ -1,11 +1,9 @@
 package com.caeta.bookstore.autor;
 
-import com.caeta.bookstore.autor.exeption.UniqueEmail;
+import com.caeta.bookstore.autor.validator.UniqueEmail;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-
-import java.time.LocalDate;
 
 public class AutorRequest {
     @NotBlank
@@ -21,7 +19,7 @@ public class AutorRequest {
     public AutorRequest() {
     }
 
-    public AutorRequest(@NotBlank String nome, @NotBlank @Email String email, @NotBlank @Size(max = 400) String descricao) {
+    public AutorRequest(@NotBlank String nome, @UniqueEmail @NotBlank @Email String email, @NotBlank @Size(max = 400) String descricao) {
         this.nome = nome;
         this.email = email;
         this.descricao = descricao;

@@ -1,5 +1,6 @@
-package com.caeta.bookstore.autor.exeption;
+package com.caeta.bookstore.exeption;
 
+import com.caeta.bookstore.exeption.ErrorDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;

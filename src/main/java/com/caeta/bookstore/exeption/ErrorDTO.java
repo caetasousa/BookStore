@@ -1,4 +1,4 @@
-package com.caeta.bookstore.autor.exeption;
+package com.caeta.bookstore.exeption;
 
 import java.util.Map;
 

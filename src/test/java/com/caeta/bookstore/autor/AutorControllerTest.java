@@ -37,13 +37,10 @@ public class AutorControllerTest {
     @Test
     @Transactional
     public void shouldCreateAnAutor() throws Exception {
-        // Crie um objeto AutorRequest para simular a criação de um novo Autor
         AutorRequest request = new AutorRequest("Eduardo", "caet@email.com", "Descrição do autor");
 
-        // Converta o objeto AutorRequest para JSON
         String jsonRequest = objectMapper.writeValueAsString(request);
 
-        // Realize a requisição POST para criar um novo Autor
         ResultActions resultActions = mockMvc.perform(post("/autor")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest));
@@ -61,16 +58,12 @@ public class AutorControllerTest {
     @Test
     @Transactional
     public void shouldNotCreateAnAuthorWithARepeatedEmail() throws Exception {
-        // Salva um autor no banco de dados para verificação de duplicidade de email
         autorRepository.save(new Autor("Eduardo", "caet@email.com", "Descrição do autor"));
 
-        // Crie um objeto AutorRequest para simular a criação de um novo Autor
         AutorRequest request = new AutorRequest("Eduardo", "caet@email.com", "Descrição do autor");
 
-        // Converta o objeto AutorRequest para JSON
         String jsonRequest = objectMapper.writeValueAsString(request);
 
-        // Realiza a requisição POST para criar um novo Autor
         ResultActions resultActions = mockMvc.perform(post("/autor")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest));

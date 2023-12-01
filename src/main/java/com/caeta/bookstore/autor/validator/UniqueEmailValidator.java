@@ -1,4 +1,4 @@
-package com.caeta.bookstore.autor.exeption;
+package com.caeta.bookstore.autor.validator;
 
 import com.caeta.bookstore.autor.Autor;
 import com.caeta.bookstore.autor.AutorRepository;
