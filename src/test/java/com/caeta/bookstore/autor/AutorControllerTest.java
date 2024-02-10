@@ -71,7 +71,7 @@ public class AutorControllerTest {
         var responseBody = resultActions.andReturn().getResponse().getContentAsString();
         var responseStatusCode = resultActions.andReturn().getResponse().getStatus();
 
-        assertTrue(responseBody.contains("This email is already registered"));
+        assertTrue(responseBody.contains("Esse email ja existe"));
         assertEquals(400, responseStatusCode);
     }
 }

@@ -51,7 +51,7 @@ class CategoriaControllerTest {
 
     @Test
     @Transactional
-    void shouldNotCreateAnAuthorWithARepeatedNome() throws Exception {
+    void shouldNotCreateAnCategoriaWithARepeatedNome() throws Exception {
         repository.save(new Categoria("Ficção Fantastica"));
 
         CategoriaRequest request = new CategoriaRequest("Ficção Fantastica");
@@ -65,7 +65,7 @@ class CategoriaControllerTest {
         var responseBody = resultActions.andReturn().getResponse().getContentAsString();
         var responseStatusCode = resultActions.andReturn().getResponse().getStatus();
 
-        assertTrue(responseBody.contains("This name is already registered"));
+        assertTrue(responseBody.contains("Esse nome ja existe"));
         assertEquals(400, responseStatusCode);
     }
 }

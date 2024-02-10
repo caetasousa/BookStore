@@ -1,4 +1,4 @@
-package com.caeta.bookstore.autor.validator;
+package com.caeta.bookstore.livro.validators;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -8,12 +8,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Constraint(validatedBy = UniqueEmailValidator.class)
+@Constraint(validatedBy = ExistsAutorValidate.class)
 @Target({ElementType.PARAMETER, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface UniqueEmail {
+public @interface ExistsAutor {
 
-    String message() default "Esse email ja existe";
+    String message() default "Esse autor nao existe";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

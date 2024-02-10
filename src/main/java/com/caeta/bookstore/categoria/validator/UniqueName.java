@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UniqueName {
 
-    String message() default "This name is already registered";
+    String message() default "Esse nome ja existe";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
