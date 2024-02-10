@@ -132,4 +132,48 @@ class LivroControllerTest {
                 .getResponse()
                 .getContentAsString();
     }
+
+    @Test
+    @Transactional
+    public void shouldReturnLivroForId() throws Exception {
+        Autor autor = new Autor("Eduardo", "caet@email.com", "Descrição do autor");
+        autorRepository.save(autor);
+
+        Categoria categoria = new Categoria("Ficção Fantastica");
+        categoriaRepository.save(categoria);
+
+        LivroRequest request = new LivroRequest("Titulo do Livro", "Resumo do livro... (até 500 caracteres)", "Sumário do livro...",
+                BigDecimal.valueOf(29.99) , 200, "978-3-16-148410-7", LocalDate.of(2024,12,31),
+                categoria.getId(), autor.getId());
+        var livro = livroRepository.save(request.toModel(categoriaRepository, autorRepository));
+
+        String responseBody = mockMvc.perform(MockMvcRequestBuilders.get("/livro/{id}",livro.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+    }
+
+    @Test
+    @Transactional
+    public void shouldReturn404() throws Exception {
+        Autor autor = new Autor("Eduardo", "caet@email.com", "Descrição do autor");
+        autorRepository.save(autor);
+
+        Categoria categoria = new Categoria("Ficção Fantastica");
+        categoriaRepository.save(categoria);
+
+        LivroRequest request = new LivroRequest("Titulo do Livro", "Resumo do livro... (até 500 caracteres)", "Sumário do livro...",
+                BigDecimal.valueOf(29.99) , 200, "978-3-16-148410-7", LocalDate.of(2024,12,31),
+                categoria.getId(), autor.getId());
+        var livro = livroRepository.save(request.toModel(categoriaRepository, autorRepository));
+
+        String responseBody = mockMvc.perform(MockMvcRequestBuilders.get("/livro/{id}",0)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+    }
 }

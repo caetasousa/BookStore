@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,5 +43,12 @@ public class LivroController {
         return livrosData.stream()
                 .map(data -> new LivroDTO((Long) data[0], (String) data[1]))
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<LivroConsultaDTO> consultarLivro(@PathVariable Long id) {
+        return livroRepository.findById(id)
+                .map(livro -> ResponseEntity.ok(new LivroConsultaDTO(livro)))
+                .orElse(ResponseEntity.notFound().build());
     }
 }
