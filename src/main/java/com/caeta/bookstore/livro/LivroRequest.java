@@ -14,7 +14,6 @@ import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 public class LivroRequest {
 

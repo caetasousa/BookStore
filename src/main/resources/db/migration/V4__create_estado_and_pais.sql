@@ -1,0 +1,11 @@
+CREATE TABLE pais (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL UNIQUE
+);
+
+CREATE TABLE estado (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    pais_id INT,
+    FOREIGN KEY (pais_id) REFERENCES Pais(id)
+);

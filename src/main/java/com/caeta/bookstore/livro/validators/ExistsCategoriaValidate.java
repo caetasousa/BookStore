@@ -2,8 +2,6 @@ package com.caeta.bookstore.livro.validators;
 
 import com.caeta.bookstore.categoria.Categoria;
 import com.caeta.bookstore.categoria.CategoriaRepository;
-import com.caeta.bookstore.livro.Livro;
-import com.caeta.bookstore.livro.LivroRepository;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
